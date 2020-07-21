@@ -1,4 +1,4 @@
-//
+ //
 //  ConcentrationThemeChooser.swift
 //  Concentration
 //
@@ -16,9 +16,9 @@ class ConcentrationThemeChooserViewController: UIViewController {
     
     // dictionary
     let themes = [
-        "Sports": "🤼🏋️‍♂️⛷🏌️‍♂️⛹️‍♀️🤸‍♂️",
-        "Animals": "🐶🐱🐭🐹🐰🐻",
-        "Faces": "😀🤑😎🤓😁😫"
+        "Sports": "🤼🏋️‍♂️⛷🏌️‍♂️⛹️‍♀️🤸‍♂️🏌️‍♂️⛹️‍♀️🤸‍♂️",
+        "Animals": "🐶🐱🐭🐹🐰🐻🐹🐰🐻",
+        "Faces": "😀🤑😎🤓😁😫🤓😁😫"
     ]
     
     private var lastSeguedToConcentrationtViewController: ConcentrationViewController?

@@ -17,6 +17,18 @@ class ConcentrationViewController: UIViewController {
             updateViewFromModel()
         }
     }
+    
+    private var visibleCardButtons: [UIButton]!{
+        return cardButtonsArray?.filter{
+            !$0.superview!.isHidden
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateViewFromModel()
+    }
+    
     @IBOutlet private var cardButtonsArray: [UIButton]! // contains a reference to all the view's buttons
     @IBOutlet private weak var flipCountLabel: UILabel!{
         didSet{
@@ -25,7 +37,7 @@ class ConcentrationViewController: UIViewController {
     } // Label weak reference, optional, when printed it doesnt need ! it will be unwrapped but if its nil it will crash the app
     
     //    private var emojiChoices = ["🚛","🎹","🌚","🌸","🌼","🌈","💥","☂️","🐶","😞"]
-    private var emojiChoices = "🚛🎹🌚🌸🌼🌈"
+    private var emojiChoices = "🚛🎹🌚🌸🌼🌈🚛🎹🌚🌸🌼🌈"
     private var emojiDictionary = [Card: String]()
     
     // its initialized as lazy because in order to use any of its properties (cardButtons),
@@ -36,7 +48,7 @@ class ConcentrationViewController: UIViewController {
     
     // Computed property, read only, get not necessary bc its read only, constants let cant be computed props
     var numberOfPairs: Int{
-        return cardButtonsArray.count / 2
+        return visibleCardButtons.count / 2
     }
     
     private (set) var flipCount = 0 {
@@ -50,13 +62,14 @@ class ConcentrationViewController: UIViewController {
             //            .strokeWidth: 5.0,
             .strokeColor:  #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
         ]
-        let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attrributes)
+        let attributedString = NSAttributedString(
+            string: "Flips: \(flipCount)", attributes: attrributes)
         flipCountLabel.attributedText = attributedString
     }
     
     @IBAction private func touchCard(_ sender: UIButton) {
         flipCount += 1
-        if let cardIndex = cardButtonsArray.firstIndex(of: sender){// if individual button view is in the array declared
+        if let cardIndex = visibleCardButtons.firstIndex(of: sender){// if individual button view is in the array declared
             game.chooseCard(at: cardIndex)
             updateViewFromModel()
         }
@@ -66,9 +79,9 @@ class ConcentrationViewController: UIViewController {
     }
     
     private func updateViewFromModel(){
-        if cardButtonsArray != nil {
-            for index in cardButtonsArray.indices{
-                let button = cardButtonsArray[index]
+        if visibleCardButtons != nil {
+            for index in visibleCardButtons.indices{
+                let button = visibleCardButtons[index]
                 let card = game.cards[index]
                 if card.isFaceUp{
                     button.setTitle(emoji(for: card), for: UIControl.State.normal)
